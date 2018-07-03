@@ -1,0 +1,33 @@
+while True:
+    print('Enter an integer.')
+    numb = input()
+    if numb.isdigit():
+        number = int(numb)
+        def collatz(number):
+                if number%2 == 0:
+                    p = number//2
+                    return p
+                    print(str(p))
+                elif number%2 == 1:
+                    m = number*3+1
+                    return m
+                    print(str(m))
+
+        if number == 1:
+         print('Sorry. Please put an integer other than 1.')
+         continue
+        if number == 0:
+            number=collatz(number)
+            print(number, number*number)
+            continue
+        while number !=1:
+                number=collatz(number)
+                print(number,number*number)
+        print('Would you like to try another number? Input Yes or No.')
+        reply = input()
+        if reply == 'Yes':
+            continue
+        else:
+            break
+    else:
+        continue
