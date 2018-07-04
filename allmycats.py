@@ -1,4 +1,3 @@
-import random
 num = list(range(0, 17))
 catNames = []
 r=0
