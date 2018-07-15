@@ -1,22 +1,32 @@
 print('Enter the frequency in Hertz:')
 f=int(input())
+pi = 3.14
+w= 2*pi*f
 print('Enter the capacitance in microfarad:')
-capa=float(input())
+cap=float(input())
+capa = cap*0.000001
 print('Enter the inductance in Henry:')
 ind=int(input())
 print('Enter the starting resistance')
 res1 = int(input())
 print('Enter the ending resistance')
 res2 = int(input())
-ced= 2*3.14*f*capa*0.000001
+ced= w*capa
 print('Starting impedance of resistance in ohms:' + str(int(res1)))
-print('Impedance of capacitor in ohms :' + str(-1/ced))
-print('Impedance of inductor in ohms:' + str(float(2*3.14*f*ind)))
+print('Magnitude of Impedance of capacitor in ohms :' + str(1/ced))
+print('Magnitude of Impedance of inductor in ohms:' + str(float(2*3.14*f*ind)))
 while int(res1)<int(res2):
-    indu=2*3.14*f*ind
-    cap = -1/ced
-    med= 1/indu + 1/res1
-    imped= cap + 1/med
-    print(str(res1)+'   '+str(cap)+'   '+ str(indu)+'   '+str(imped))
+    x_l=w*ind
+    capac=ced
+    invr=1/res1
+    invrsq= invr**2
+    capsq=capac**2
+    tep= invrsq + capsq
+    teep= tep**2
+    twp= x_l*tep + capac
+    twpsq = twp**2
+    impi = invrsq/teep + twpsq/teep
+    imped= impi**0.5
+    print(str(res1)+'   '+str(1/ced)+'   '+ str(x_l)+'   '+str(imped))
     res1= res1+1
     continue
