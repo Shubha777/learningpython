@@ -1,0 +1,28 @@
+import requests, bs4
+from selenium import webdriver
+from time import sleep
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+driver = webdriver.Chrome()
+ur = input("Enter the video url of the channel ")
+url=" https://www.youtube.com/"+ur
+res = requests.get(url)
+res.raise_for_status()
+soup = bs4.BeautifulSoup(res.text, 'html.parser')
+for link in soup.find_all("a", class_="yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2"):
+    link.get('href')
+    m = link.get('href')
+    if "/watch" in m :
+        links = 'https://www.youtube.com' + m
+        print(links)
+        newrl = 'https://ytmp3.cc/'
+        driver.get(newrl)
+        driver.find_element_by_id('input').send_keys(links)
+        sleep(1)
+        driver.find_element_by_id('submit').click()
+        wait = WebDriverWait(driver, 30)
+        element = wait.until(EC.visibility_of_any_elements_located(((By.LINK_TEXT, 'Download'))))
+        download = driver.find_element_by_link_text('Download')
+        download.click()
+        sleep(1)
