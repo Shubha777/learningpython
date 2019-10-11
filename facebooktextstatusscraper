@@ -1,0 +1,53 @@
+import bs4, time, csv
+from selenium import webdriver
+from time import sleep
+driver = webdriver.Chrome()
+ur = input('Input the facebook id word')
+url = "https://m.facebook.com/" + ur
+driver.get("http://m.facebook.com/")
+usr = input('Enter your email address')
+pwd = input('Enter your password')
+print("Opened facebook")
+sleep(1)
+username_box = driver.find_element_by_id('m_login_email')
+username_box.send_keys(usr)
+print("Email address has been entered.")
+sleep(1)
+password_box = driver.find_element_by_name('pass')
+password_box.send_keys(pwd)
+print("Password has been entered.")
+login_box = driver.find_element_by_name('login')
+login_box.click()
+print("Login done")
+sleep(1)
+driver.get("http://m.facebook.com/" + ur)
+res = driver.page_source
+soup = bs4.BeautifulSoup(res)
+k = int(input('How many posts you want?'))
+i = 0
+m = ()
+while i < k:
+    i = i + 1
+    SCROLL_PAUSE_TIME = 0.5
+    last_height = driver.execute_script("return document.body.scrollHeight")
+    while True:
+        for tag in soup.find_all("p"):
+            if tag.string is not None:
+                tag = tag.string
+                m = m + (tag,)
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(SCROLL_PAUSE_TIME)
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            break
+        last_height = new_height
+    res = driver.page_source
+    soup = bs4.BeautifulSoup(res)
+    print(i)
+d=list(set(m))
+print(d)
+with open('data.csv', 'w') as csvFile:
+    writer = csv.writer(csvFile)
+    for row in d:
+        writer.writerow(row.split(', '))
+
