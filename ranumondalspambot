@@ -1,0 +1,80 @@
+#prep
+from selenium import webdriver
+from time import sleep
+import bs4 as bs4
+
+#I'm using Firefox here
+
+driver = webdriver.Firefox()
+driver.get('https://m.facebook.com')
+print('open facebook')
+
+# temp
+ur = '' #enter your ur
+pwd = '' #enter your password
+usr = '' #enter your email here
+comment = 'O Ki Lagche!'
+
+# opening and inputting
+# inputting email
+username_box = driver.find_element_by_id('m_login_email')
+username_box.send_keys(usr)
+print("Email address has been entered.")
+sleep(1)
+
+# inputting password
+password_box = driver.find_element_by_name('pass')
+password_box.send_keys(pwd)
+print("Password has been entered.")
+sleep(1)
+
+# logging in
+login_box = driver.find_element_by_name('login')
+login_box.click()
+print("Login done")
+sleep(3)
+
+# visitng Ranu Mondal Page
+driver.get('https://m.facebook.com/RanuMondalSinger/')
+
+# collecting all comments link
+res = driver.page_source
+soup = bs4.BeautifulSoup(res, 'html.parser')
+def commtext(tag):
+    return tag.name == 'a' and 'Comments' in tag.text
+r = soup.find_all(commtext)
+# st=r[0].attrs['href']
+sleep(2)
+
+# loop
+while True:
+
+    i = 0
+
+    while i < len(r):
+
+        m = r[i].attrs['href']
+
+        driver.get('https://m.facebook.com' + str(m))
+        # commenting
+        comm_box = driver.find_element_by_id('composerInput')
+        comm_box.send_keys(comment)
+
+        print("Comment has been entered.")
+        clickone_box = driver.find_element_by_xpath("//input[@value='Comment']")
+        clickone_box.click()
+        print("commenting done")
+        sleep(4)
+        i = i + 1
+
+    else:
+        break
+    sleep(3)
+    driver.get('https://m.facebook.com/RanuMondalSinger/')
+    sleep(1)
+    next_page = driver.find_element_by_partial_link_text('Show more')
+    next_page.click()
+#there might be some problem with loop. Facebook banned that fake test account. I will test later
+
+
+
