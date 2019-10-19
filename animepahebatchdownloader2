@@ -1,0 +1,63 @@
+# importing modules
+from selenium import webdriver
+from time import sleep
+import bs4 as bs4
+
+# prepping driver
+driver = webdriver.Chrome()
+driver.get('https://animepahe.com/')
+print('opened website')
+# test input
+anime = 'Bungou Stray Dogs'
+# anime = input('Enter the name of the anime')
+# searching anime
+sleep(2)
+search = driver.find_element_by_class_name('input-search')
+search.click()
+sleep(1)
+search.send_keys(anime)
+sleep(4)
+# selecting the search results
+ani = driver.find_element_by_class_name('result-title')
+ani.click()
+sleep(4)
+# collecting video link
+res = driver.page_source
+soup = bs4.BeautifulSoup(res, 'html.parser')
+
+
+def anilink(tag):
+    return tag.name == 'a' and str(anime) in tag.text
+
+
+r = soup.find_all(anilink)
+print('No of links =' + str(len(r)))
+print(r[0].attrs['href'])
+print(str(r[3].attrs['class'])== "['play']")
+print('No of links =' + str(len(r)))
+# download prep
+i = 0
+while i < len(r):
+ try:
+    if str(r[i].attrs['class']) == "['play']":
+        ko = str(r[i].attrs['href'])
+
+        m = ko.replace('/anime', '/download')
+
+        driver.get('https://animepahe.com' + str(m) + '/720p/kwik')
+        sleep(7)
+        # opening
+        button = driver.find_element_by_xpath("//button[@onclick='go()']")
+        button.click()
+        sleep(4)
+
+        print("button has been clicked")
+        clickone_box = driver.find_element_by_xpath("//button[@type='submit']")
+        clickone_box.click()
+        print("downloading started")
+        sleep(4)
+        i = i + 1
+
+ except:
+     i=i + 1
+     pass
