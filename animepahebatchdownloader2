@@ -7,9 +7,11 @@ import bs4 as bs4
 driver = webdriver.Chrome()
 driver.get('https://animepahe.com/')
 print('opened website')
+
 # test input
 anime = 'Bungou Stray Dogs'
 # anime = input('Enter the name of the anime')
+
 # searching anime
 sleep(2)
 search = driver.find_element_by_class_name('input-search')
@@ -17,6 +19,7 @@ search.click()
 sleep(1)
 search.send_keys(anime)
 sleep(4)
+
 # selecting the search results
 ani = driver.find_element_by_class_name('result-title')
 ani.click()
