@@ -1,0 +1,53 @@
+def dicconvertter(p):
+    dick= {a[1]: a[0]  for a in p}
+    return dick
+
+def adder(j,a,b):
+      if a.get(j) != None and b.get(j) != None:
+          return a.get(j)+b.get(j)
+      elif a.get(j) == None:
+          return b.get(j)
+      elif b.get(j)== None:
+          return a.get(j)
+
+
+
+
+def addpoly(p1,p2):
+        dick1=dicconvertter(p1)
+        dick2=dicconvertter(p2)
+
+        store=set(list(dick1.keys())+list(dick2.keys()))
+        feck={}
+        #print(store)
+        for j in store:
+            a=adder(j,dick1,dick2)
+            if a !=0:
+
+               peck={j: a}
+               feck.update(peck)
+
+        #print(feck)
+
+        lifeck = [(m,n) for n,m in feck.items()]
+        lifeck.reverse()
+        return lifeck
+def mulpoly(p1,p2):
+
+    arr=[]
+    for i in p1:
+        parr=[]
+        for j in p2:
+           parr.append((i[0]*j[0],i[1]+j[1]))
+        arr.append(parr)
+    count=[(0,0)]
+    for m in arr:
+        count=addpoly(count,m)
+
+    return count
+#print(addpoly([(4,3),(3,0)],[(-4,3),(2,1)]))
+#print(addpoly([(2,1)],[(-2,1)]))
+print(mulpoly([(1,1),(-1,0)],[(1,2),(1,1),(1,0)]))
+
+
+#print(dicconvertter([(0,0)]))
